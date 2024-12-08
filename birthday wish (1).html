@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surprise Birthday Wish</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #ADD8E6;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        h1 {
+            color: #FF6347;
+            font-size: 60px;
+            position: absolute;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        #birthdayCanvas {
+            display: block;
+            margin: 0 auto;
+            background-color: #ADD8E6;
+        }
+        .message {
+            font-size: 30px;
+            color: green;
+            position: absolute;
+            top: 200px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .date {
+            font-size: 20px;
+            color: yellow;
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .creator {
+            font-size: 20px;
+            color: green;
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    </style>
+</head>
+<body>
+
+<h1>Happy Birthday!</h1>
+<canvas id="birthdayCanvas" width="1200" height="800"></canvas>
+<p class="message" id="birthdayMessage"></p>
+<p class="date" id="date"></p>
+<p class="creator">Created by J.Abishan</p>
+
+<script>
+// Get the canvas and context
+const canvas = document.getElementById('birthdayCanvas');
+const ctx = canvas.getContext('2d');
+
+// Define random birthday messages
+const messages = [
+    "Wishing you a year full of joy, laughter, and endless happiness!",
+    "May this year bring you closer to your dreams, and may your heart always be filled with love!",
+    "Here's to a year as amazing as you are, filled with new adventures and beautiful memories!",
+    "Happy Birthday! May your day be as special as you are, and your year ahead be full of success!"
+];
+
+// Select a random message
+const birthdayMessage = messages[Math.floor(Math.random() * messages.length)];
+
+// Today's date
+const today = new Date();
+const formattedDate = today.toDateString();
+
+// Set the message to display
+document.getElementById("birthdayMessage").innerText = birthdayMessage;
+document.getElementById("date").innerText = "Date: " + formattedDate;
+
+// Draw the birthday cake (simplified)
+function drawCake() {
+    ctx.fillStyle = '#8B4513'; // Bottom layer (brown)
+    ctx.fillRect(350, 300, 500, 60); // Bottom cake layer
+    ctx.fillStyle = '#FFB6C1'; // Middle layer (light pink)
+    ctx.fillRect(370, 240, 460, 60); // Middle cake layer
+    ctx.fillStyle = '#FF1493'; // Top layer (pink)
+    ctx.fillRect(390, 180, 420, 60); // Top cake layer
+
+    // Draw cake candles
+    for (let i = 0; i < 3; i++) {
+        let x = 480 + (i * 140); // Candle positions
+        ctx.fillStyle = '#FFD700'; // Candle color
+        ctx.fillRect(x, 150, 20, 50); // Candle body
+        ctx.fillStyle = '#FFD700'; // Flame color
+        ctx.beginPath();
+        ctx.arc(x + 10, 150 - Math.abs(Math.sin(Date.now() / 150) * 10), 8, 0, Math.PI * 2); // Flame flicker
+        ctx.fill();
+    }
+}
+
+// Draw balloons
+function drawBalloons() {
+    const colors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF7F00'];
+    for (let i = 0; i < 5; i++) {
+        const x = Math.random() * (canvas.width - 100) + 50;
+        const y = Math.random() * (canvas.height - 200) + 50;
+        const radius = Math.random() * 30 + 30;
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        ctx.beginPath();
+        ctx.arc(x, y, radius, 0, Math.PI * 2); // Balloon circle
+        ctx.fillStyle = color;
+        ctx.fill();
+        ctx.strokeStyle = '#FFFFFF'; // Balloon string
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.moveTo(x, y + radius);
+        ctx.lineTo(x, y + 150); // String
+        ctx.stroke();
+    }
+}
+
+// Draw streamers
+function drawStreamers() {
+    const streamerColors = ['#FF6347', '#FF1493', '#8B0000', '#228B22'];
+    for (let i = 0; i < 4; i++) {
+        ctx.strokeStyle = streamerColors[i];
+        ctx.lineWidth = 5;
+        ctx.beginPath();
+        ctx.moveTo(i * 300 + 50, 0);
+        ctx.lineTo(i * 300 + 350, 300); // Streamer curve
+        ctx.stroke();
+    }
+}
+
+// Draw everything on the canvas
+function drawScene() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawCake();
+    drawBalloons();
+    drawStreamers();
+}
+
+// Animation loop
+function animate() {
+    drawScene();
+    requestAnimationFrame(animate);
+}
+
+// Start animation
+animate();
+
+</script>
+</body>
+</html>
